@@ -1,46 +1,27 @@
+# Library includes
 
-This directory is intended for project specific (private) libraries.
-PlatformIO will compile them to static libraries and link into executable file.
+## PN532
+The PN532 library was modified it correct the emululate tag error.
+The lines below needed to be updated to fix how phones see the emulated tag in order to all reading/ writing.
 
-The source code of each library should be placed in a an own separate directory
-("lib/your_library_name/[here are source files]").
+PN532_COMMAND_TGINITASTARGET,
+      0x05,                  // MODE: 0x04 = PICC only, 0x01 = Passive only (0x02 = DEP only)
 
-For example, see a structure of the following two libraries `Foo` and `Bar`:
+      // MIFARE PARAMS
+      0x08, 0x00,         // SENS_RES (seeeds studio set it to 0x04, nxp to 0x08)
+      0x00, 0x00, 0x00,   // NFCID1t    (is set over sketch with setUID())
+      0x60,               // SEL_RES    (0x20=Mifare DelFire, 0x60=custom)
 
-|--lib
-|  |
-|  |--Bar
-|  |  |--docs
-|  |  |--examples
-|  |  |--src
-|  |     |- Bar.c
-|  |     |- Bar.h
-|  |  |- library.json (optional, custom build options, etc) https://docs.platformio.org/page/librarymanager/config.html
-|  |
-|  |--Foo
-|  |  |- Foo.c
-|  |  |- Foo.h
-|  |
-|  |- README --> THIS FILE
-|
-|- platformio.ini
-|--src
-   |- main.c
+      // FELICA PARAMS
+      0x01, 0xFE,         // NFCID2t (8 bytes)
+      0xA2, 0xA3, 0xA4,
+      0xA5, 0xA6, 0xA7,
+      0xC0, 0xC1, 0xC2,
+      0xC3, 0xC4, 0xC5,
+      0xC6, 0xC7, 0xFF,
+      0xFF,
+      0xAA, 0x99, 0x88, //NFCID3t (10 bytes)
+      0x77, 0x66, 0x55, 0x44,
+      0x33, 0x22, 0x11,
 
-and a contents of `src/main.c`:
-```
-#include <Foo.h>
-#include <Bar.h>
-
-int main (void)
-{
-  ...
-}
-
-```
-
-PlatformIO Library Dependency Finder will find automatically dependent
-libraries scanning project source files.
-
-More information about PlatformIO Library Dependency Finder
-- https://docs.platformio.org/page/librarymanager/ldf.html
+      0x00, // length of general bytes
